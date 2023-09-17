@@ -8,7 +8,7 @@
 energia_produzida_diaria = 0
 co2_produzido = 0
 energia_no_painel = 0
-capacidade_painel = 1000 
+capacidade_painel = 1000
 
 # Lista para armazenar dados da semana
 dados_semana = []
@@ -28,10 +28,13 @@ def exibir_dados_diarios():
     print(f"Capacidade do painel: {capacidade_painel} watts")
 
 # Função para registrar os dados da semana
-def registrar_dados_semana():
-    global dias_inseridos
+def registrar_dados_diarios(producao_diaria):
+    global energia_produzida_diaria, co2_produzido, energia_no_painel, dias_inseridos
+    energia_produzida_diaria += producao_diaria
+    co2_produzido += calcular_co2(producao_diaria)
+    energia_no_painel += producao_diaria
     dias_inseridos += 1
-    dados_semana.append((energia_produzida_diaria, co2_produzido))
+    dados_semana.append((producao_diaria, calcular_co2(producao_diaria)))
     if dias_inseridos >= 7:
         print("Dados da semana registrados com sucesso.")
     else:
@@ -66,7 +69,7 @@ while True:
         if producao_diaria_str:
             producao_diaria = float(producao_diaria_str)
             if producao_diaria >= 0:
-                atualizar_dados_diarios(producao_diaria)
+               registrar_dados_diarios(producao_diaria)
             else:
                 print("A produção diária deve ser maior ou igual a zero.")
         else:
